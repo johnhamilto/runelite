@@ -31,12 +31,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
+import net.runelite.api.*;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -130,6 +125,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Setter
 	private boolean shiftModifier = false;
 
+	private Actor lastInteract = null;
+	private String lastOverhead = "";
+
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
 	{
@@ -139,6 +137,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		keyManager.registerKeyListener(inputListener);
 		if (config.shiftClickCustomization())
 		{
 			enableCustomization();
@@ -148,6 +147,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		keyManager.unregisterKeyListener(inputListener);
 		disableCustomization();
 	}
 
@@ -208,14 +208,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void enableCustomization()
 	{
-		keyManager.registerKeyListener(inputListener);
 		refreshShiftClickCustomizationMenus();
 		clientThread.invoke(this::resetItemCompositionCache);
 	}
 
 	private void disableCustomization()
 	{
-		keyManager.unregisterKeyListener(inputListener);
 		removeShiftClickCustomizationMenus();
 		configuringShiftClick = false;
 		clientThread.invoke(this::resetItemCompositionCache);
@@ -373,9 +371,31 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (option.equals("talk-to"))
 		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
+			if (config.swapPickpocket())
 			{
-				swap("pickpocket", option, target, true);
+
+				Actor a = client.getLocalPlayer().getInteracting();
+				lastInteract = a == null ? lastInteract : a;
+				String overhead = lastInteract != null ? lastInteract.getOverhead() : "";
+//				lastOverhead = overhead == null ? lastOverhead : overhead;
+
+				if (overhead != null && overhead.equals("Zzzzzz"))
+				{
+					swap("pickpocket", option, target, true);
+				}
+				else
+				{
+					swap("knock-out", option, target, true);
+				}
+
+//				if (shiftModifier)
+//				{
+//					swap("knock-out", option, target, true);
+//				}
+//				else
+//				{
+//					swap("pickpocket", option, target, true);
+//				}
 			}
 
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
