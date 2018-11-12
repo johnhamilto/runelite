@@ -128,10 +128,10 @@ class MouseHighlightOverlay extends Overlay
 
 		// If this varc is set, a tooltip is already being displayed
 		int tooltipDisplayed = client.getVar(VarClientInt.TOOLTIP_VISIBLE);
-		if (tooltipDisplayed == 1)
-		{
-			return null;
-		}
+//		if (tooltipDisplayed == 1)
+//		{
+//			return null;
+//		}
 
 		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
 		return null;
