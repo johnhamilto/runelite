@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -87,6 +88,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -126,6 +128,8 @@ public class GroundItemsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hideAll;
+	
+	private boolean hotKey2Pressed;
 
 	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
@@ -487,6 +491,13 @@ public class GroundItemsPlugin extends Plugin
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
+			final boolean isItemShown = isShown(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
+
+			if (!hotKey2Pressed && !isItemShown)
+			{
+				client.setMenuEntries(ArrayUtils.removeElement(menuEntries, lastEntry));
+				return;
+			}
 
 			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
 			{
@@ -592,6 +603,23 @@ public class GroundItemsPlugin extends Plugin
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
 			? config.hiddenColor()
 			: null;
+	}
+
+	boolean isShown(String item, int gePrice, int haPrice, boolean isTradeable)
+	{
+		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
+		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
+		final boolean canBeHidden = gePrice > 0 || isTradeable || !config.dontHideUntradeables();
+		final boolean underGe = gePrice < config.getHideUnderValue();
+		final boolean underHa = haPrice < config.getHideUnderValue();
+
+		// Explicit highlight > explicit hide > implicit highlight > implicit hide > implicit show
+		if (isExplicitHighlight)
+			return true;
+		else if (isExplicitHidden)
+			return false;
+		else
+			return !(canBeHidden && underGe && underHa);
 	}
 
 	Color getItemColor(Color highlighted, Color hidden)

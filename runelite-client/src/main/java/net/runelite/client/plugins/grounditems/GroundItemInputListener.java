@@ -37,6 +37,7 @@ import net.runelite.client.input.MouseAdapter;
 public class GroundItemInputListener extends MouseAdapter implements KeyListener
 {
 	private static final int HOTKEY = KeyEvent.VK_ALT;
+	private static final int HOTKEY2 = KeyEvent.VK_SHIFT;
 
 	private Instant lastPress;
 
@@ -74,6 +75,10 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 				lastPress = Instant.now();
 			}
 		}
+		if (e.getKeyCode() == HOTKEY2)
+		{
+			plugin.setHotKey2Pressed(true);
+		}
 	}
 
 	@Override
@@ -85,6 +90,10 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 			plugin.setTextBoxBounds(null);
 			plugin.setHiddenBoxBounds(null);
 			plugin.setHighlightBoxBounds(null);
+		}
+		if (e.getKeyCode() == HOTKEY2)
+		{
+			plugin.setHotKey2Pressed(false);
 		}
 	}
 

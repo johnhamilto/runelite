@@ -374,28 +374,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapPickpocket())
 			{
 
-				Actor a = client.getLocalPlayer().getInteracting();
-				lastInteract = a == null ? lastInteract : a;
-				String overhead = lastInteract != null ? lastInteract.getOverhead() : "";
-//				lastOverhead = overhead == null ? lastOverhead : overhead;
-
-				if (overhead != null && overhead.equals("Zzzzzz"))
-				{
-					swap("pickpocket", option, target, true);
-				}
-				else
-				{
-					swap("knock-out", option, target, true);
-				}
-
-//				if (shiftModifier)
-//				{
-//					swap("knock-out", option, target, true);
-//				}
-//				else
+//				Actor a = client.getLocalPlayer().getInteracting();
+//				lastInteract = a == null ? lastInteract : a;
+//				String overhead = lastInteract != null ? lastInteract.getOverhead() : "";
+////				lastOverhead = overhead == null ? lastOverhead : overhead;
+//
+//				if (overhead != null && overhead.equals("Zzzzzz"))
 //				{
 //					swap("pickpocket", option, target, true);
 //				}
+//				else
+//				{
+//					swap("knock-out", option, target, true);
+//				}
+
+				swap("pickpocket", option, target, true);
 			}
 
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
