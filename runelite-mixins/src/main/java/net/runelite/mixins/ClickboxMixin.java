@@ -193,7 +193,7 @@ public abstract class ClickboxMixin implements RSClient
 	}
 
 	@Inject
-	private void addHashAtMouse(long hash)
+	public void addHashAtMouse(long hash)
 	{
 		long[] entitiesAtMouse = client.getEntitiesAtMouse();
 		int count = client.getEntitiesAtMouseCount();

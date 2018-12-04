@@ -1355,6 +1355,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				return;
 			}
 
+//			int localX = client.getCenterX();
+//			int localY = client.getCenterY();
+//			System.out.println(localX);
+//			System.out.println(x);
+
 			client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
 			int tc = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
