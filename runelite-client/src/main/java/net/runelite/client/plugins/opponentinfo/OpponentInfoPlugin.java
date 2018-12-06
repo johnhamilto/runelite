@@ -26,24 +26,28 @@
 package net.runelite.client.plugins.opponentinfo;
 
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumSet;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.WorldType;
+import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
@@ -125,6 +129,34 @@ public class OpponentInfoPlugin extends Plugin
 		{
 			hiscoreEndpoint = HiscoreEndpoint.NORMAL;
 		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (!menuEntryAdded.getOption().equalsIgnoreCase("attack"))
+		{
+			return;
+		}
+
+		int npcID = menuEntryAdded.getIdentifier();
+		final NPC[] cachedNPCs = client.getCachedNPCs();
+		NPC npc = cachedNPCs[npcID];
+
+		if (npc == null)
+		{
+			return;
+		}
+
+		int npcHPPercentage = npc.getHealthRatio() * 100 / npc.getHealth();
+		String npcHealthBuilder = npc.getHealthRatio() > 0 ? " (" + npcHPPercentage + "%)" : "";
+		Color npcHPColor = new Color(255 - ((npcHPPercentage * 255) / 100), ((npcHPPercentage * 255) / 100), 0);
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+		lastEntry.setTarget(lastEntry.getTarget() + ColorUtil.prependColorTag(npcHealthBuilder, npcHPColor));
+
+		client.setMenuEntries(menuEntries);
 	}
 
 	@Subscribe
