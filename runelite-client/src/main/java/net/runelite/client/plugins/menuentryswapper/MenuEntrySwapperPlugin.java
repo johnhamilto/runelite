@@ -650,6 +650,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	private void remove(String option, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+
+		int idx = searchIndex(entries, option, target, strict);
+
+		if (idx >= 0)
+		{
+			entries = ArrayUtils.remove(entries, idx);
+			client.setMenuEntries(entries);
+		}
+	}
+
 	private void removeShiftClickCustomizationMenus()
 	{
 		menuManager.removeManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE);
