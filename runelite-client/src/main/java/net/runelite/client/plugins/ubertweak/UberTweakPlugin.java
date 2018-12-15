@@ -25,7 +25,20 @@
 package net.runelite.client.plugins.ubertweak;
 
 
+import com.google.inject.Provides;
+import net.runelite.api.Client;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.menus.MenuManager;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.grounditems.GroundItemsPlugin;
+
+import javax.inject.Inject;
+
+import static java.lang.Boolean.TRUE;
 
 @PluginDescriptor(
         name = "Uber Tweaks Plugin",
@@ -33,7 +46,44 @@ import net.runelite.client.plugins.PluginDescriptor;
         tags = {"tweak", "tweaks", "uber", "uberrs"},
         enabledByDefault = false
 )
-public class UberTweakPlugin
+public class UberTweakPlugin extends Plugin
 {
-
+    @Inject
+    private Client client;
+    
+    @Inject
+    private UberTweakConfig config;
+    
+    @Inject
+    private ConfigManager configManager;
+    
+    @Inject
+    private KeyManager keyManager;
+    
+    @Inject
+    private MenuManager menuManager;
+    
+    @Provides
+    UberTweakConfig provideConfig(ConfigManager configManager)
+    {
+        return configManager.getConfig(UberTweakConfig.class);
+    }
+    
+    @Override
+    public void startUp()
+    {
+    
+    }
+    
+    @Override
+    public void shutDown()
+    {
+    
+    }
+    
+    @Subscribe
+    public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+    {
+    
+    }
 }

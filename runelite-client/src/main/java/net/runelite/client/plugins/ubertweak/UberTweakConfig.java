@@ -24,9 +24,31 @@
  */
 package net.runelite.client.plugins.ubertweak;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("ubertweak")
-public interface UberTweakConfig
+public interface UberTweakConfig extends Config
 {
+    @ConfigItem(
+            keyName = "swaps",
+            name = "menu entry swaps",
+            description = "enables swaps"
+    )
+    default boolean menuEntrySwaps()
+    {
+        return false;
+    }
+    
+    @ConfigItem(
+            keyName = "grounditem",
+            name = "ground item hiding",
+            description = "enables hiding of ground items"
+    )
+    default boolean groundItemHiding()
+    {
+        return false;
+    }
+    
 }
