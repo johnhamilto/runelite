@@ -89,6 +89,14 @@ public class NpcSceneOverlay extends Overlay
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
 			renderNpcOverlay(graphics, npc, config.getHighlightColor());
+			if (npc.getName().equals("Spawn") && npc.getAnimation() == 7159)
+			{
+				int size = 5;
+				LocalPoint lp = npc.getLocalLocation();
+				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+				
+				renderPoly(graphics, Color.red, tilePoly);
+			}
 		}
 
 		return null;

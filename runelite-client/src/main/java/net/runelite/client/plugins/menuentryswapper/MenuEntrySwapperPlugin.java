@@ -376,7 +376,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 				Actor a = client.getLocalPlayer().getInteracting();
 				lastInteract = a == null ? lastInteract : a;
-				String overhead = lastInteract != null ? lastInteract.getOverhead() : "";
+				String overhead = lastInteract != null ? lastInteract.getOverheadText() : "";
 //				lastOverhead = overhead == null ? lastOverhead : overhead;
 
 				if (overhead != null && overhead.equals("Zzzzzz"))
@@ -483,6 +483,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
+		
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())
