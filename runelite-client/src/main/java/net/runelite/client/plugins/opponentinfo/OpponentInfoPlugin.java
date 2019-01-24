@@ -156,7 +156,7 @@ public class OpponentInfoPlugin extends Plugin
 		MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 		lastEntry.setTarget(lastEntry.getTarget() + ColorUtil.prependColorTag(npcHealthBuilder, npcHPColor));
 
-		client.setMenuEntries(menuEntries);
+//		client.setMenuEntries(menuEntries);
 	}
 
 	@Subscribe

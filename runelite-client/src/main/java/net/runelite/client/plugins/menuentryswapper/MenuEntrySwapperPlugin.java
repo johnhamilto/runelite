@@ -483,6 +483,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
+		else if (target.contains("death spawn"))
+		{
+			remove(option, target, true);
+		}
+		else if (shiftModifier && option.equals("attack"))
+		{
+			remove(option, target, true);
+		}
+		else if (shiftModifier && option.equals("tag"))
+		{
+			deprioritize(option, target, true);
+		}
+		
 		
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
@@ -660,6 +673,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (idx >= 0)
 		{
 			entries = ArrayUtils.remove(entries, idx);
+			client.setMenuEntries(entries);
+		}
+	}
+	
+	private void deprioritize(String option, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		
+		int idx = searchIndex(entries, option, target, strict);
+		
+		if (idx >= 0)
+		{
+			entries[idx].setType(entries[idx].getType() + 2000);
 			client.setMenuEntries(entries);
 		}
 	}
