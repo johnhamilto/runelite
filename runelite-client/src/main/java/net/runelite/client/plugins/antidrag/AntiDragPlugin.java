@@ -43,7 +43,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
-	private static final int DEFAULT_DELAY = 5;
+	private static final int DEFAULT_DELAY = 10;
 
 	@Inject
 	private Client client;

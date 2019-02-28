@@ -91,7 +91,7 @@ public class NpcSceneOverlay extends Overlay
 			renderNpcOverlay(graphics, npc, config.getHighlightColor());
 			if (npc.getName().equals("Spawn") && npc.getAnimation() == 7159)
 			{
-				int size = 5;
+				int size = 3;
 				LocalPoint lp = npc.getLocalLocation();
 				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 				
