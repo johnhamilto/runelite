@@ -462,6 +462,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("quick-travel", option, target, true);
 			}
+			
+			swap("contract", option, target, true);
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
@@ -592,6 +594,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("teleport", option, target, true);
 			}
+		}
+		else if (config.swapBones() && option.equals("bury"))
+		{
+			swap("use", option, target, true);
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
